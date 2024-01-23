@@ -15,8 +15,8 @@ link-citations: true
 ---
 
 ```{r, include=FALSE}
-install.packages("opendatatoronto")
-install.packages("knitr")
+# install.packages("opendatatoronto")
+# install.packages("knitr")
 library(knitr)
 library(janitor)
 library(lubridate)
@@ -29,9 +29,13 @@ library(tidyverse)
 
 # Introduction
 
-For us, the dwelling serves as both a physical and mental environment, influencing aspects such as education, residential registration, and credit. The national marriage rate is on a continous decline, influenced by various factors. Apart from significant shifts in attitudes, there is a heightened cautiousness toward marriage, delayed onset of first marriages,and an increasing sense of independence among women. Another contributing factor is that individuals, both men and women, may have undergone wedding ceremonies without obtaining a legal license, often due to the pursuit of property ownership. Late marriage has become popular, although house prices are not the only reason, but it is a very important part of the factor. Housing prices affect every aspect of ordinary people,and the marriage rate is just another reflection of housing prices in our lives[@wrenn2019house]. In this paper, I found data of Toronto marriage license and Toronto afforable housing during the period 2020-2023 in the open data of opendatatoronto. Then I draw a conclusion that there is positive correlation between the number of Toronto afforable housing and people get marriage license. I also find research done by statistician, they explore the correlation between housing prices, rents, and the marriage rate using data from Iranian provinces spanning the period 2002--2010. The investigation seeks evidence of a connection between elevated and persistent housing costs and the notable decline in marriage rates experienced by Iran over the last decade[@gholipour2015marriage]. \# Data ##Marriage Licence Statistics In order to investigate the trend of people get marriage liscense in Toronto, I using the dataset "Marriage Licence Statistics" from from Toronto Open Data Portal[@citedata]. This dataset provides details about the Toronto marriage liscense during 2020-2023. The dataset is generated to align with the Provincial legislations of the Marriage Act and the Vital Statistics Act. Additionally, it serves the operational needs and business functions of the City. This dataset contains 1095 observations of marriage liscenses with 5 variablels related to marriage liscense. This report focus on date, id, civic centre, marriages licenses, time period. By using packages"tidyverse"[@citetidyverse], R[@citeR], "knitr"[@citeknitr], "janitor"[@citejanitor], "lubridate"[@lubridate], "dypler"[@citedplyr], "ggplot2"[@ggplot2].
+For us, the dwelling serves as both a physical and mental environment, influencing aspects such as education, residential registration, and credit. The national marriage rate is on a continous decline, influenced by various factors. Apart from significant shifts in attitudes, there is a heightened cautiousness toward marriage, delayed onset of first marriages,and an increasing sense of independence among women. Another contributing factor is that individuals, both men and women, may have undergone wedding ceremonies without obtaining a legal license, often due to the pursuit of property ownership. Late marriage has become popular, although house prices are not the only reason, but it is a very important part of the factor. Housing prices affect every aspect of ordinary people,and the marriage rate is just another reflection of housing prices in our lives[@wrenn2019house]. In this paper, I found data of Toronto marriage license and Toronto afforable housing during the period 2020-2023 in the open data of opendatatoronto. Then I draw a conclusion that there is positive correlation between the number of Toronto afforable housing and people get marriage license. I also find research done by statistician, they explore the correlation between housing prices, rents, and the marriage rate using data from Iranian provinces spanning the period 2002--2010. The investigation seeks evidence of a connection between elevated and persistent housing costs and the notable decline in marriage rates experienced by Iran over the last decade[@gholipour2015marriage]. In order to investigate the trend of people get marriage liscense in Toronto, I using the dataset "Marriage Licence Statistics" from from Toronto Open Data Portal[@citedata]. This dataset provides details about the Toronto marriage liscense during 2020-2023. The dataset is generated to align with the Provincial legislations of the Marriage Act and the Vital Statistics Act. Additionally, it serves the operational needs and business functions of the City. This dataset contains 1095 observations of marriage liscenses with 5 variablels related to marriage liscense. This report focus on date, id, civic centre, marriages licenses, time period. By using packages"tidyverse"[@citetidyverse], R[@citeR], "knitr"[@citeknitr], "janitor"[@citejanitor], "lubridate"[@lubridate], "dypler"[@citedplyr], "ggplot2"[@ggplot2].
+\newpage
 
-```{r echo=FALSE, include = FALSE}
+# Data
+
+## Toronto marriage liscense statistics
+```{r message=FALSE, include = FALSE}
 marriage_packages <- search_packages("Marriage Licence Statistics")
 marriage_packages
 
@@ -51,7 +55,7 @@ head(marriages_licenses)
 
 ```
 
-```{r, include=FALSE, echo = FALSE}
+```{r, include=FALSE, message = FALSE}
 set.seed(100666)
 
 simulated_data <- tibble(
@@ -84,7 +88,6 @@ simulated_data <- read_csv("Simulated_Marriage_Licence_Statistics.csv", col_type
 simulated_data <- simulated_data %>%
   distinct()
 sum_missing <- sum(is.na(simulated_data))
-cat("Number of missing values:", sum_missing, "\n")
 simulated_data <- simulated_data %>%
   filter(marriages_licenses > 0)
 write_csv(x = simulated_data, path = "Cleaned_Simulated_Marriage_Licence_Statistics.csv")
@@ -93,7 +96,7 @@ knitr::kable(head(simulated_data), show_col_types = FALSE)
 
 The table shows first 6 row of Marriage Licence Statistic data in Toronto. "id" in terms of a unique name for specific row in Open Data database. "civic centre" represents unique code for specific civic centre." marriage licenses" represents the number of people who get marriage licenses in Toronto. Time period is different quarters in the year that people in Toronto choose to get marriage licenses in.
 
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE}
 library(ggplot2)
 cleaned_simulated_data <- read_csv("Cleaned_Simulated_Marriage_Licence_Statistics.csv")
 ggplot(cleaned_simulated_data, aes(x = civic_centre, y = marriages_licenses, fill = civic_centre)) +
@@ -106,22 +109,25 @@ ggplot(cleaned_simulated_data, aes(x = civic_centre, y = marriages_licenses, fil
 
 According to the barplot above, The x-axis represents civic centre, the y-axis represents marriages licenses, and the fill color is determined by civic_centre. In short, the graph is a grouped bar plot showing the total number of marriage licenses for each civic centre. The bars are grouped by civic centre, and the color distinguishes different civic centres. The plot provides a visual comparison of marriage license distribution across various civic centres. The maximum number of people get marriage licenses at the civic centre of NY which is around 58 while number of people get marriage licenses at ET and SC is 46 and 50 respectively.
 
-```{r echo=FALSE}
+```{r echo=FALSE, message = FALSE}
 library(ggplot2)
+cleaned_simulated_data <- cleaned_simulated_data %>%
+  select(time_period, marriages_licenses, civic_centre)  
+
 ggplot(cleaned_simulated_data, aes(x = time_period, y = marriages_licenses, fill = civic_centre)) +
-  geom_histogram(stat = "identity", position = "dodge", binwidth = 5, alpha = 0.7) +labs(title = "Histogram of Marriages Licenses by Time Period",
+  geom_bar(stat = "identity", position = "dodge", alpha = 0.7) +
+  labs(title = "Barplot of Marriages Licenses by Time Period",
        x = "Time Period",
        y = "Marriages Licenses")
-
 ```
 
 In conclusion, the graph is a histogram that visualizes the distribution of marriages licenses over different time periods, with bars grouped by civic centre. The x-axis represents quarters of a year , the y-axis represents numbers of marriages licenses that people got in each quarter in Toronto. The fill color is determined by the civic enter variable, ET represents in color red, NY represents color green, SC represents color blue. The shape of this histogram is slightly right_skewed with the maximum number of number of people (55) get marriage licenses is at Q2 which is around April to June in the NY civic centre. During the first and fourth quarter of the year, there are around 43 people get their marriage licenses in three different civic centre. There are around 45 people get marriage licenses in the third quarter.
+\newpage
 
-# Data
+## Active Affordable and Social Housing Units 
+This dataset of "Active Affordable and Social Housing Units" provides details about the currently managed social housing and affordable housing units within the Toronto's jurisdiction during the year 2020-2023 from Toronto Open Data Portal[@citedata]. The City oversees social housing to ensure affordability for households with low to moderate incomes. Additionally, affordable housing in this context refers to rental residences under the City's management that align with the provincial criteria for affordability. This dataset contains 12 observational of affordable social housing units and 3 variables which are quarter, subsidized housing units, affordable housing units. By using packages"tidyverse"[@citetidyverse], R[@citeR], "knitr"[@citeknitr],"janitor"[@citejanitor],"lubridate"[@lubridate],"ggplot2"[@ggplot2].
 
-##Active Affordable and Social Housing Units This dataset of "Active Affordable and Social Housing Units" provides details about the currently managed social housing and affordable housing units within the Toronto's jurisdiction during the year 2020-2023 from Toronto Open Data Portal[@citedata]. The City oversees social housing to ensure affordability for households with low to moderate incomes. Additionally, affordable housing in this context refers to rental residences under the City's management that align with the provincial criteria for affordability. This dataset contains 12 observational of affordable social housing units and 3 variables which are quarter, subsidized housing units, affordable housing units. By using packages"tidyverse"[@citetidyverse], R[@citeR], "knitr"[@citeknitr],"janitor"[@citejanitor],"lubridate"[@lubridate],"ggplot2"[@ggplot2].
-
-```{r echo=FALSE, include = FALSE}
+```{r meaasage=FALSE, include = FALSE}
 relevant_packages <- search_packages("Active Affordable and Social Housing Units") 
 print(relevant_packages)
 Affordable_Housing <-
@@ -133,7 +139,9 @@ write_csv(
   file = "Affordable Housing.csv"
 )
 head(Affordable_Housing)
+```
 
+```{r meaasage=FALSE, include = FALSE}
 set.seed(123)
 
 simulated_housing_data <- tibble(
@@ -148,12 +156,10 @@ write_csv(
 )
 simulated_housing_data <- read_csv("Simulated_Affordable_Social_Housing_Units.csv")
 head(simulated_housing_data) 
-   
-
-
 ```
 
-```{r echo=FALSE}
+
+```{r echo = FALSE}
 simulated_data <- read_csv("Simulated_Marriage_Licence_Statistics.csv", col_types = cols(
   id = col_double(),
   date = col_date(format = ""),
@@ -164,18 +170,18 @@ simulated_data <- read_csv("Simulated_Marriage_Licence_Statistics.csv", col_type
 simulated_data <- simulated_data %>%
   distinct()
 sum_missing <- sum(is.na(simulated_data))
-cat("Number of missing values:", sum_missing, "\n")
 simulated_data <- simulated_data %>%
   filter(marriages_licenses > 0)
 write_csv(x = simulated_data, path = "Cleaned_Simulated_Marriage_Licence_Statistics.csv")
-knitr::kable(head(simulated_data), show_col_types = FALSE)
-
+knitr::kable(head(simulated_data))
 ```
+
 
 The table shows first 6 rows of affordable housing Units in Toronto. The predictor "Quarter" represents the four different time period of the year. Predictor "subsidized housing unit" in terms of residential properties constructed with government support which aimed at ensuring more economical rental options for low-income households, are overseen by the City. Social housing encompasses residences categorized as Rent-Geared-to-Income (RGI) housing with the typical RGI rent amounting to 30 percent of a household's monthly Adjusted Family Net Income. "Affordable housing unit" represents Residential properties managed by the City, where monthly rents covered utilities are equal to or less than 100 percent of the Average Market Rent (AMR). The Canadian Mortgage and Housing Corporation (CMHC) releases the AMR figures on an annual basis.
 
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE}
 library(ggplot2)
+library(readr)
 cleaned_simulated_housing_data <- read_csv("Cleaned_Simulated_Affordable_Social_Housing_Units.csv")
 
 ggplot(cleaned_simulated_housing_data, aes(x = quarter, y = affordable_housing_units)) +

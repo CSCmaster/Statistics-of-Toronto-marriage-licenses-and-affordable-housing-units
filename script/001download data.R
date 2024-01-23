@@ -34,25 +34,3 @@ simulated_housing_data <- read_csv("Simulated_Affordable_Social_Housing_Units.cs
 head(simulated_housing_data) 
    
 
-simulated_housing_data <- read_csv("Simulated_Affordable_Social_Housing_Units.csv")
-cleaned_simulated_housing_data <- simulated_housing_data %>%
-  distinct()
-cleaned_simulated_housing_data <- cleaned_simulated_housing_data %>%
-  filter(subsidized_housing_units >= 0, affordable_housing_units >= 0)
-write_csv(
-  x = cleaned_simulated_housing_data,
-  path = "Cleaned_Simulated_Affordable_Social_Housing_Units.csv"
-)
-head(cleaned_simulated_housing_data)
-
-library(ggplot2)
-cleaned_simulated_housing_data <- read_csv("Cleaned_Simulated_Affordable_Social_Housing_Units.csv")
-
-ggplot(cleaned_simulated_housing_data, aes(x = quarter, y = affordable_housing_units)) +
-  geom_bar(stat = "identity", fill = "green", color = "black", alpha = 0.7) +
-  labs(title = "Barplot of Affordable Housing Units",
-       x = "Quarter",
-       y = "Affordable Housing Units")
-
-
-
