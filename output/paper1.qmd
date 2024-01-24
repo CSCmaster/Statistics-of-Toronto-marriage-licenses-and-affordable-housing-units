@@ -29,19 +29,25 @@ library(tidyverse)
 
 # Introduction
 
-For us, the dwelling serves as both a physical and mental environment, influencing aspects such as education, residential registration, and credit. The national marriage rate is on a continous decline, influenced by various factors. Apart from significant shifts in attitudes, there is a heightened cautiousness toward marriage, delayed onset of first marriages,and an increasing sense of independence among women. Another contributing factor is that individuals, both men and women, may have undergone wedding ceremonies without obtaining a legal license, often due to the pursuit of property ownership. Late marriage has become popular, although house prices are not the only reason, but it is a very important part of the factor. Housing prices affect every aspect of ordinary people,and the marriage rate is just another reflection of housing prices in our lives[@wrenn2019house]. In this paper, I found data of Toronto marriage license and Toronto afforable housing during the period 2020-2023 in the open data of opendatatoronto. Then I draw a conclusion that there is positive correlation between the number of Toronto afforable housing and people get marriage license. I also find research done by statistician, they explore the correlation between housing prices, rents, and the marriage rate using data from Iranian provinces spanning the period 2002--2010. The investigation seeks evidence of a connection between elevated and persistent housing costs and the notable decline in marriage rates experienced by Iran over the last decade[@gholipour2015marriage]. In order to investigate the trend of people get marriage liscense in Toronto, I using the dataset "Marriage Licence Statistics" from from Toronto Open Data Portal[@citedata]. This dataset provides details about the Toronto marriage liscense during 2020-2023. The dataset is generated to align with the Provincial legislations of the Marriage Act and the Vital Statistics Act. Additionally, it serves the operational needs and business functions of the City. This dataset contains 1095 observations of marriage liscenses with 5 variablels related to marriage liscense. This report focus on date, id, civic centre, marriages licenses, time period. By using packages"tidyverse"[@citetidyverse], R[@citeR], "knitr"[@citeknitr], "janitor"[@citejanitor], "lubridate"[@lubridate], "dypler"[@citedplyr], "ggplot2"[@ggplot2].
+For us, the dwelling serves as both a physical and mental environment, influencing aspects such as education, residential registration, and credit. The national marriage rate is on a continous decline, influenced by various factors.Late marriage has become popular, although house prices are not the only reason, but it is a very important part of the factor. Housing prices affect every aspect of ordinary people,and the marriage rate is just another reflection of housing prices in our lives[@wrenn2019house].
+
+In this paper, I found data of Toronto marriage license and Toronto afforable housing during the period 2020-2023 in the open data of opendatatoronto. Then I draw a conclusion that there is positive correlation between the number of Toronto afforable housing and people get marriage license. I also find research done by statistician, they explore the correlation between housing prices, rents, and the marriage rate using data from Iranian provinces spanning the period 2002--2010. The investigation seeks evidence of a connection between elevated and persistent housing costs and the notable decline in marriage rates experienced by Iran over the last decade[@gholipour2015marriage].
+
+In order to investigate the trend of people get marriage liscense in Toronto, I using the dataset "Marriage Licence Statistics" from from Toronto Open Data Portal[@citedata]. This dataset provides details about the Toronto marriage liscense during 2020-2023. The dataset is generated to align with the Provincial legislations of the Marriage Act and the Vital Statistics Act. Additionally, it serves the operational needs and business functions of the City. This dataset contains 1095 observations of marriage liscenses with 5 variablels related to marriage liscense. This report focus on date, id, civic centre, marriages licenses, time period. By using packages"tidyverse"[@citetidyverse], R[@citeR], "knitr"[@citeknitr], "janitor"[@citejanitor], "lubridate"[@lubridate], "dypler"[@citedplyr], "ggplot2"[@ggplot2]. Furthermore, I have used general AI to help me generate the draft of this paper, AI helps to generate idea of how to make connections between each graph and my research question and gives me a lot of plans to write the code.
+
 \newpage
 
 # Data
 
 ## Toronto marriage liscense statistics
+
 ```{r message=FALSE, include = FALSE}
 marriage_packages <- search_packages("Marriage Licence Statistics")
 marriage_packages
 
 marriages_licenses <-list_package_resources("e28bc818-43d5-43f7-b5d9-bdfb4eda5feb")
 marriages_licenses
-  # "https://open.toronto.ca/dataset/marriage-licence-statistics/"
+   "https://open.toronto.ca/dataset/marriage-licence-statistics/"
   list_package_resources("e28bc818-43d5-43f7-b5d9-bdfb4eda5feb") |>
   filter(name == "Marriage Licence Statistics Data.csv") |>
   get_resource()
@@ -101,13 +107,13 @@ library(ggplot2)
 cleaned_simulated_data <- read_csv("Cleaned_Simulated_Marriage_Licence_Statistics.csv")
 ggplot(cleaned_simulated_data, aes(x = civic_centre, y = marriages_licenses, fill = civic_centre)) +
   geom_bar(stat = "identity", position = "dodge", color = "black") +
-  labs(title = "Barplot of Marriages Licenses by Civic Centre",
+  labs(title = "Figure 1: Barplot of Marriages Licenses by Civic Centre",
        x = "Civic Centre",
        y = "Total Marriages Licenses")
 
 ```
 
-According to the barplot above, The x-axis represents civic centre, the y-axis represents marriages licenses, and the fill color is determined by civic_centre. In short, the graph is a grouped bar plot showing the total number of marriage licenses for each civic centre. The bars are grouped by civic centre, and the color distinguishes different civic centres. The plot provides a visual comparison of marriage license distribution across various civic centres. The maximum number of people get marriage licenses at the civic centre of NY which is around 58 while number of people get marriage licenses at ET and SC is 46 and 50 respectively.
+According to the Figure 1 above, The x-axis represents civic centre, the y-axis represents marriages licenses, and the fill color is determined by civic_centre. In short, the graph is a grouped bar plot showing the total number of marriage licenses for each civic centre. The bars are grouped by civic centre, and the color distinguishes different civic centres. The plot provides a visual comparison of marriage license distribution across various civic centres. The maximum number of people get marriage licenses at the civic centre of NY which is around 58 while number of people get marriage licenses at ET and SC is 46 and 50 respectively.
 
 ```{r echo=FALSE, message = FALSE}
 library(ggplot2)
@@ -116,15 +122,15 @@ cleaned_simulated_data <- cleaned_simulated_data %>%
 
 ggplot(cleaned_simulated_data, aes(x = time_period, y = marriages_licenses, fill = civic_centre)) +
   geom_bar(stat = "identity", position = "dodge", alpha = 0.7) +
-  labs(title = "Barplot of Marriages Licenses by Time Period",
+  labs(title = "Figure 2: Barplot of Marriages Licenses by Time Period",
        x = "Time Period",
        y = "Marriages Licenses")
 ```
 
-In conclusion, the graph is a histogram that visualizes the distribution of marriages licenses over different time periods, with bars grouped by civic centre. The x-axis represents quarters of a year , the y-axis represents numbers of marriages licenses that people got in each quarter in Toronto. The fill color is determined by the civic enter variable, ET represents in color red, NY represents color green, SC represents color blue. The shape of this histogram is slightly right_skewed with the maximum number of number of people (55) get marriage licenses is at Q2 which is around April to June in the NY civic centre. During the first and fourth quarter of the year, there are around 43 people get their marriage licenses in three different civic centre. There are around 45 people get marriage licenses in the third quarter.
-\newpage
+In conclusion, the figure 2 is a histogram that visualizes the distribution of marriages licenses over different time periods, with bars grouped by civic centre. The x-axis represents quarters of a year , the y-axis represents numbers of marriages licenses that people got in each quarter in Toronto. The fill color is determined by the civic enter variable, ET represents in color red, NY represents color green, SC represents color blue. The shape of this histogram is slightly right_skewed with the maximum number of number of people (55) get marriage licenses is at Q2 which is around April to June in the NY civic centre. During the first and fourth quarter of the year, there are around 43 people get their marriage licenses in three different civic centre. There are around 45 people get marriage licenses in the third quarter. \newpage
 
-## Active Affordable and Social Housing Units 
+## Active Affordable and Social Housing Units
+
 This dataset of "Active Affordable and Social Housing Units" provides details about the currently managed social housing and affordable housing units within the Toronto's jurisdiction during the year 2020-2023 from Toronto Open Data Portal[@citedata]. The City oversees social housing to ensure affordability for households with low to moderate incomes. Additionally, affordable housing in this context refers to rental residences under the City's management that align with the provincial criteria for affordability. This dataset contains 12 observational of affordable social housing units and 3 variables which are quarter, subsidized housing units, affordable housing units. By using packages"tidyverse"[@citetidyverse], R[@citeR], "knitr"[@citeknitr],"janitor"[@citejanitor],"lubridate"[@lubridate],"ggplot2"[@ggplot2].
 
 ```{r meaasage=FALSE, include = FALSE}
@@ -158,7 +164,6 @@ simulated_housing_data <- read_csv("Simulated_Affordable_Social_Housing_Units.cs
 head(simulated_housing_data) 
 ```
 
-
 ```{r echo = FALSE}
 simulated_data <- read_csv("Simulated_Marriage_Licence_Statistics.csv", col_types = cols(
   id = col_double(),
@@ -176,7 +181,6 @@ write_csv(x = simulated_data, path = "Cleaned_Simulated_Marriage_Licence_Statist
 knitr::kable(head(simulated_data))
 ```
 
-
 The table shows first 6 rows of affordable housing Units in Toronto. The predictor "Quarter" represents the four different time period of the year. Predictor "subsidized housing unit" in terms of residential properties constructed with government support which aimed at ensuring more economical rental options for low-income households, are overseen by the City. Social housing encompasses residences categorized as Rent-Geared-to-Income (RGI) housing with the typical RGI rent amounting to 30 percent of a household's monthly Adjusted Family Net Income. "Affordable housing unit" represents Residential properties managed by the City, where monthly rents covered utilities are equal to or less than 100 percent of the Average Market Rent (AMR). The Canadian Mortgage and Housing Corporation (CMHC) releases the AMR figures on an annual basis.
 
 ```{r echo=FALSE, message=FALSE}
@@ -186,16 +190,16 @@ cleaned_simulated_housing_data <- read_csv("Cleaned_Simulated_Affordable_Social_
 
 ggplot(cleaned_simulated_housing_data, aes(x = quarter, y = affordable_housing_units)) +
   geom_bar(stat = "identity", fill = "green", color = "black", alpha = 0.7) +
-  labs(title = "Barplot of Affordable Housing Units",
+  labs(title = "Figure 3: Barplot of Affordable Housing Units",
        x = "Quarter",
        y = "Affordable Housing Units")
 ```
 
-In a nutshell, the graph is a bar plot that illustrates the distribution of affordable housing units over different quarters. Each bar represents the count of affordable housing units for a specific quarter. The bars are filled with green color, outlined in black, and slightly transparent for better visualization. The plot provides a visual overview of how the number of affordable housing units varies across quarters. According to the graph, the maximum number of affordable housing units is 90 which is occuried at Quarter 2,the lowest number of affordable housing units is 75 which is occuried at Quarter1 and Quarter4.
+In a nutshell, the Figure 3 is a bar plot that illustrates the distribution of affordable housing units over different quarters. Each bar represents the count of affordable housing units for a specific quarter. The bars are filled with green color, outlined in black, and slightly transparent for better visualization. The plot provides a visual overview of how the number of affordable housing units varies across quarters. According to the graph, the maximum number of affordable housing units is 90 which is occuried at Quarter 2,the lowest number of affordable housing units is 75 which is occuried at Quarter1 and Quarter4. When comparing figures 2 and 3, Quarter 2 corresponds to the peak for both the quantity of affordable housing units and the number of issued marriage licenses in Toronto. On the contrary, Quarters 1 and 4 coincide with the lowest points for both the number of affordable housing units and the number of people obtaining marriage licenses in Toronto. This suggests a significant correlation between housing units and marriage.
 
 # Discussion
 
-With the analysis of two dataset, I found that there is positive correlations between growing number of affordable housing units and increasing number of people get marriage licenses in Toronto. With comparison of figure 2 and 3, Quater 2 meets the maximum point of both number of affordable housing units and number of people get marriage licenses in Toronto while quarter 1 and 4 meet the lowest ponit of both number of affordable housing units and number of people get marriage licenses in Toronto, it shows that there is strong connections between housing units and marriage.\
+With the analysis of two dataset, I found that there is positive correlations between growing number of affordable housing units and increasing number of people get marriage licenses in Toronto. With comparison of figure 2 and 3, Quater 2 meets the maximum point of both number of affordable housing units and number of people get marriage licenses in Toronto while quarter 1 and 4 meet the lowest ponit of both number of affordable housing units and number of people get marriage licenses in Toronto, it shows that there is strong connections between housing units and marriage. \
 From my perspective, Owning a house gives me a sense of security. Having your own house can provide a stable living environment without facing housing problems caused by increasing rent or the expulsion of the landlord which can provide a stable sense of security. Owning a house is good for the stability of marriage and the growth of children. Having your own home can provide a stable environment for married life and the growth of children, which is conducive to the growth of relationships and children. If the long-term living conditions are unstable, it will have a certain negative impact on these two aspects.However, in specific stage under personal and family conditions, short-term renting is also acceptable. The choice between owning and renting also needs to be made according to each person's unique situation.
 
 \newpage
