@@ -33,7 +33,7 @@ For us, the dwelling serves as both a physical and mental environment, influenci
 
 In this paper, I found data of Toronto marriage license and Toronto afforable housing during the period 2020-2023 in the open data of opendatatoronto. Then I draw a conclusion that there is positive correlation between the number of Toronto afforable housing and people get marriage license. I also find research done by statistician, they explore the correlation between housing prices, rents, and the marriage rate using data from Iranian provinces spanning the period 2002--2010. The investigation seeks evidence of a connection between elevated and persistent housing costs and the notable decline in marriage rates experienced by Iran over the last decade[@gholipour2015marriage].
 
-In order to investigate the trend of people get marriage liscense in Toronto, I using the dataset "Marriage Licence Statistics" from from Toronto Open Data Portal[@citedata]. This dataset provides details about the Toronto marriage liscense during 2020-2023. The dataset is generated to align with the Provincial legislations of the Marriage Act and the Vital Statistics Act. Additionally, it serves the operational needs and business functions of the City. This dataset contains 1095 observations of marriage liscenses with 5 variablels related to marriage liscense. This report focus on date, id, civic centre, marriages licenses, time period. By using packages"tidyverse"[@citetidyverse], R[@citeR], "knitr"[@citeknitr], "janitor"[@citejanitor], "lubridate"[@lubridate], "dypler"[@citedplyr], "ggplot2"[@ggplot2]. Furthermore, I have used general AI to help me generate the draft of this paper, AI helps to generate idea of how to make connections between each graph and my research question and gives me a lot of plans to write the code.
+In order to investigate the trend of people get marriage liscense in Toronto, I using the dataset "Marriage Licence Statistics" from from Toronto Open Data Portal[@citedata]. This dataset provides details about the Toronto marriage liscense during 2020-2023. The dataset is generated to align with the Provincial legislations of the Marriage Act and the Vital Statistics Act. Additionally, it serves the operational needs and business functions of the City. This dataset contains 1095 observations of marriage liscenses with 5 variablels related to marriage liscense. This report focus on date, id, civic centre, marriages licenses, time period. By using packages"tidyverse"[@citetidyverse], R[@citeR], "knitr"[@citeknitr], "janitor"[@citejanitor], "lubridate"[@lubridate], "dypler"[@citedplyr], "ggplot2"[@ggplot2].
 
 \newpage
 
@@ -164,6 +164,19 @@ simulated_housing_data <- read_csv("Simulated_Affordable_Social_Housing_Units.cs
 head(simulated_housing_data) 
 ```
 
+```{r, include=FALSE, message = FALSE}
+simulated_housing_data <- read_csv("Simulated_Affordable_Social_Housing_Units.csv")
+cleaned_simulated_housing_data <- simulated_housing_data %>%
+  distinct()
+cleaned_simulated_housing_data <- cleaned_simulated_housing_data %>%
+  filter(subsidized_housing_units >= 0, affordable_housing_units >= 0)
+write_csv(
+  x = cleaned_simulated_housing_data,
+  path = "Cleaned_Simulated_Affordable_Social_Housing_Units.csv"
+)
+head(cleaned_simulated_housing_data)
+```
+
 ```{r echo = FALSE}
 simulated_data <- read_csv("Simulated_Marriage_Licence_Statistics.csv", col_types = cols(
   id = col_double(),
@@ -199,7 +212,7 @@ In a nutshell, the Figure 3 is a bar plot that illustrates the distribution of a
 
 # Discussion
 
-With the analysis of two dataset, I found that there is positive correlations between growing number of affordable housing units and increasing number of people get marriage licenses in Toronto. With comparison of figure 2 and 3, Quater 2 meets the maximum point of both number of affordable housing units and number of people get marriage licenses in Toronto while quarter 1 and 4 meet the lowest ponit of both number of affordable housing units and number of people get marriage licenses in Toronto, it shows that there is strong connections between housing units and marriage. \
+With the analysis of two dataset, I found that there is positive correlations between growing number of affordable housing units and increasing number of people get marriage licenses in Toronto. With comparison of figure 2 and 3, Quater 2 meets the maximum point of both number of affordable housing units and number of people get marriage licenses in Toronto while quarter 1 and 4 meet the lowest ponit of both number of affordable housing units and number of people get marriage licenses in Toronto, it shows that there is strong connections between housing units and marriage.\
 From my perspective, Owning a house gives me a sense of security. Having your own house can provide a stable living environment without facing housing problems caused by increasing rent or the expulsion of the landlord which can provide a stable sense of security. Owning a house is good for the stability of marriage and the growth of children. Having your own home can provide a stable environment for married life and the growth of children, which is conducive to the growth of relationships and children. If the long-term living conditions are unstable, it will have a certain negative impact on these two aspects.However, in specific stage under personal and family conditions, short-term renting is also acceptable. The choice between owning and renting also needs to be made according to each person's unique situation.
 
 \newpage

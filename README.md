@@ -7,3 +7,6 @@
 input file: data literature
 output file: PDF of paper1, qmd of paper1 and reference bib
 script:the download data of Toronto marriage licenses and afforable housing
+
+# LLMs usage
+Furthermore, I have used general AI to help me generate the draft of this paper, AI helps to generate idea of how to make connections between each graph and my research question.
