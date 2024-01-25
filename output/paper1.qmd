@@ -33,13 +33,13 @@ For us, the dwelling serves as both a physical and mental environment, influenci
 
 In this paper, I found data of Toronto marriage license and Toronto afforable housing during the period 2020-2023 in the open data of opendatatoronto. Then I draw a conclusion that there is positive correlation between the number of Toronto afforable housing and people get marriage license. I also find research done by statistician, they explore the correlation between housing prices, rents, and the marriage rate using data from Iranian provinces spanning the period 2002--2010. The investigation seeks evidence of a connection between elevated and persistent housing costs and the notable decline in marriage rates experienced by Iran over the last decade[@gholipour2015marriage].
 
-In order to investigate the trend of people get marriage liscense in Toronto, I using the dataset "Marriage Licence Statistics" from from Toronto Open Data Portal[@citedata]. This dataset provides details about the Toronto marriage liscense during 2020-2023. The dataset is generated to align with the Provincial legislations of the Marriage Act and the Vital Statistics Act. Additionally, it serves the operational needs and business functions of the City. This dataset contains 1095 observations of marriage liscenses with 5 variablels related to marriage liscense. This report focus on date, id, civic centre, marriages licenses, time period. By using packages"tidyverse"[@citetidyverse], R[@citeR], "knitr"[@citeknitr], "janitor"[@citejanitor], "lubridate"[@lubridate], "dypler"[@citedplyr], "ggplot2"[@ggplot2].
-
 \newpage
 
 # Data
 
 ## Toronto marriage liscense statistics
+
+In order to investigate the trend of people get marriage liscense in Toronto, I using the dataset "Marriage Licence Statistics" from from Toronto Open Data Portal[@citedata]. This dataset provides details about the Toronto marriage liscense during 2020-2023. The dataset is generated to align with the Provincial legislations of the Marriage Act and the Vital Statistics Act. Additionally, it serves the operational needs and business functions of the City. This dataset contains 1095 observations of marriage liscenses with 5 variablels related to marriage liscense. This report focus on date, id, civic centre, marriages licenses, time period. By using packages"tidyverse"[@citetidyverse], R[@citeR], "knitr"[@citeknitr], "janitor"[@citejanitor], "lubridate"[@lubridate], "dypler"[@citedplyr], "ggplot2"[@ggplot2].
 
 ```{r message=FALSE, include = FALSE}
 marriage_packages <- search_packages("Marriage Licence Statistics")
